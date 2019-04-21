@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { List } from 'antd';
 import initialTodos from './mock-todos.json';
 
+import styles from './todo-list.scss';
+
 function TodoList() {
   const [todos, setTodos] = useState(initialTodos.data);
   // console.log(todos);
@@ -24,7 +26,7 @@ function TodoList() {
 
   return (
     <List
-      className="todos-wrapper"
+      className={styles['.todos-wrapper']}
       header={<h1>List of Todos</h1>}
       footer={
         <div>
