@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { List } from 'antd';
+import { Checkbox, List } from 'antd';
 import initialTodos from './mock-todos.json';
 
-import styles from './todo-list.scss';
+import styles from './todo-list.module.scss';
 
 function TodoList() {
   const [todos, setTodos] = useState(initialTodos.data);
@@ -26,8 +26,8 @@ function TodoList() {
 
   return (
     <List
-      className={styles['.todos-wrapper']}
-      header={<h1>List of Todos</h1>}
+      className={styles['wrapper']}
+      header={<h1>To do list</h1>}
       footer={
         <div>
           Completed: {todoCount.done} / {todoCount.total}
@@ -37,13 +37,12 @@ function TodoList() {
       dataSource={todos}
       renderItem={todo => (
         <List.Item className="todo" key={todo.id}>
-          <input
-            type="checkbox"
+          <Checkbox
             checked={todo.attributes.done}
             onChange={() => toggleTodoCompletion(todos, todo.id)}
-          />
-          &nbsp;
-          {todo.attributes.title}
+          >
+            {todo.attributes.title}
+          </Checkbox>
         </List.Item>
       )}
     />

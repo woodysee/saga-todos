@@ -10,4 +10,4 @@
     - [`lint-staged`](https://www.npmjs.com/package/lint-staged) allows us to run scripts on staged files in git. See [also](https://medium.com/@okonetchnikov/make-linting-great-again-f3890e1ad6b8). (Optional)
     - [`husky`](https://www.npmjs.com/package/husky) allows you to run command-line scripts like tests before commits or pushes occur to remote. (Optional)
 - `npm install antd --save` (Using Ant Design components). Add `@import '~antd/dist/antd.css';` to index stylesheet.
-- `npm install node-sass --save` . Allow you to load SASS stylesheets.
+- `npm install node-sass --save` to use SASS stylesheets with in-built CSS Modules and Autoprefixer. Allows you to load SASS stylesheets relative to location,  `e.g. *.module.scss`. *TODO: Figure out how to load SCSS without module prefix to format suffix.*
