@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Checkbox, List } from 'antd';
+
 import initialTodos from './mock-todos.json';
 
 import styles from './todo-list.module.scss';
 
-function TodoList() {
+const TodoListWithHooks = () => {
   const [todos, setTodos] = useState(initialTodos.data);
-  // console.log(todos);
   const toggleTodoCompletion = (todos, todoId) => {
     const updatedTodos = [...todos];
     const location = updatedTodos.findIndex(({ id }) => id === todoId);
@@ -17,17 +17,17 @@ function TodoList() {
     };
     setTodos(updatedTodos);
   };
-  const computeTodoCount = todos => {
-    const done = todos.filter(todo => todo.attributes.done).length;
-    const total = todos.length;
+  const computeTodoCount = computedTodos => {
+    const done = computedTodos.filter(todo => todo.attributes.done).length;
+    const total = computedTodos.length;
     return { done, total };
   };
   const todoCount = computeTodoCount(todos);
 
   return (
     <List
-      className={styles['wrapper']}
-      header={<h1>To do list</h1>}
+      className={styles['lining']}
+      header={<h1>To do list created with Hooks</h1>}
       footer={
         <div>
           Completed: {todoCount.done} / {todoCount.total}
@@ -47,6 +47,6 @@ function TodoList() {
       )}
     />
   );
-}
+};
 
-export default TodoList;
+export default TodoListWithHooks;
