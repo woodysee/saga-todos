@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import TodoListWithHooks from './components/todo-list-with-hooks';
-import TodoListWithReduxSaga from './components/todo-list-with-saga';
+import TodoListWithRedux from './components/todo-list-with-redux';
 
 import styles from './app.module.scss';
 class App extends Component {
@@ -9,7 +9,7 @@ class App extends Component {
     return (
       <div className={styles['lining']}>
         <TodoListWithHooks />
-        <TodoListWithReduxSaga />
+        <TodoListWithRedux />
       </div>
     );
   }

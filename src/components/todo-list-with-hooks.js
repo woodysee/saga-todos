@@ -12,7 +12,7 @@ const TodoListWithHooks = () => {
     const location = updatedTodos.findIndex(({ id }) => id === todoId);
     const { done, ...otherTodoAttributes } = updatedTodos[location].attributes;
     updatedTodos[location].attributes = {
-      done: !done,
+      done,
       ...otherTodoAttributes
     };
     setTodos(updatedTodos);
