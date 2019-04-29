@@ -7,23 +7,22 @@ const initialState = {
   todos: initialTodos.data
 };
 
-export default function todoApp(state = initialState, action) {
-  const updatedState = { ...state };
+export default function todoReducer(state = initialState, action) {
   switch (action.type) {
     case TOGGLE_TODO: {
+      // See https://redux.js.org/basics/reducers#handling-actions
+      // Remember not to mutate the state directly. Otherwise it will not trigger componentDidUpdate().
+      const updatedTodos = [...state.todos];
       const index = action.attributes.index;
-      const { done, ...otherTodoAttributes } = updatedState.todos[
-        index
-      ].attributes;
-      updatedState.todos[index].attributes = {
+      const { done, ...otherTodoAttributes } = updatedTodos[index].attributes;
+      updatedTodos[index].attributes = {
         done: action.attributes.done,
         ...otherTodoAttributes
       };
-      break;
+      return { ...state, todos: updatedTodos };
     }
     default: {
-      break;
+      return state;
     }
   }
-  return updatedState;
 }

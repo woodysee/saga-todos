@@ -7,6 +7,7 @@ import { toggleTodo } from '../redux/actions';
 import styles from './todo-list.module.scss';
 
 const mapStateToProps = (state /*, ownProps*/) => {
+  console.log(state);
   return state;
 };
 
@@ -17,6 +18,8 @@ class TodoListWithRedux extends React.Component {
     todos: this.props.todos
   };
 
+  componentDidUpdate(prevProps, prevState) {}
+
   toggleTodoCompletion = ({ todo, index }) => {
     const updatedTodos = [...this.props.todos];
     const { done, ...otherTodoAttributes } = updatedTodos[index].attributes;
@@ -24,7 +27,8 @@ class TodoListWithRedux extends React.Component {
       done: !done,
       ...otherTodoAttributes
     };
-    this.setState({ todos: updatedTodos });
+    // this.setState({ todos: updatedTodos });
+    this.props.toggleTodo({ index, todo });
   };
 
   computeTodoCount = computedTodos => {
