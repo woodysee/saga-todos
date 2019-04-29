@@ -1,4 +1,5 @@
 import React from 'react';
+import isEqual from 'lodash/isEqual';
 import { Checkbox, List } from 'antd';
 
 import { connect } from 'react-redux';
@@ -7,7 +8,6 @@ import { toggleTodo } from '../redux/actions';
 import styles from './todo-list.module.scss';
 
 const mapStateToProps = (state /*, ownProps*/) => {
-  console.log(state);
   return state;
 };
 
@@ -18,17 +18,21 @@ class TodoListWithRedux extends React.Component {
     todos: this.props.todos
   };
 
-  componentDidUpdate(prevProps, prevState) {}
+  componentDidUpdate(prevProps, prevState) {
+    if (!isEqual(this.props.todos, prevProps.todos)) {
+      console.log(
+        "Strangely enough I don't see this message when requesting an action and when a todo is checked."
+      );
+    }
+    if (!isEqual(this.state.todos, prevState.todos)) {
+      console.log("I don't see this either when todo is checked");
+    }
+  }
 
   toggleTodoCompletion = ({ todo, index }) => {
-    const updatedTodos = [...this.props.todos];
-    const { done, ...otherTodoAttributes } = updatedTodos[index].attributes;
-    updatedTodos[index].attributes = {
-      done: !done,
-      ...otherTodoAttributes
-    };
+    const updatedTodo = { ...todo };
     // this.setState({ todos: updatedTodos });
-    this.props.toggleTodo({ index, todo });
+    this.props.toggleTodo({ index, todo: updatedTodo });
   };
 
   computeTodoCount = computedTodos => {
