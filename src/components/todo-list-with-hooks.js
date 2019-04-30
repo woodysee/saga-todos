@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Checkbox, List } from 'antd';
-
-import initialTodos from './mock-todos.json';
 
 import styles from './todo-list.module.scss';
 
-const TodoListWithHooks = () => {
-  const [todos, setTodos] = useState(initialTodos.data);
+const TodoListWithHooks = ({ initialTodos }) => {
+  const [todos, setTodos] = useState([]);
+  useEffect(() => {
+    setTodos(initialTodos);
+  }, [initialTodos]);
   const toggleTodoCompletion = (todos, todoId) => {
     const updatedTodos = [...todos];
     const location = updatedTodos.findIndex(({ id }) => id === todoId);
     const { done, ...otherTodoAttributes } = updatedTodos[location].attributes;
     updatedTodos[location].attributes = {
-      done,
+      done: !done,
       ...otherTodoAttributes
     };
     setTodos(updatedTodos);
