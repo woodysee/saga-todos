@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Checkbox, List } from 'antd';
+import { Checkbox, List, Spin } from 'antd';
 
 import styles from './todo-list.module.scss';
 
@@ -36,24 +36,6 @@ const TodoListWithHooks = ({ initialTodos }) => {
   };
   const todoCount = computeTodoCount(todos);
 
-  const loadingToRender = (
-    <List
-      className={styles['lining']}
-      header={<h1>To do list created with Hooks</h1>}
-      footer={
-        <div>
-          Completed: {todoCount.done} / {todoCount.total}
-        </div>
-      }
-      bordered
-      dataSource={['Loading']}
-      renderItem={todo => (
-        <List.Item className="todo" key={todo}>
-          Loading
-        </List.Item>
-      )}
-    />
-  );
   const todosToRender = (
     <List
       className={styles['lining']}
@@ -77,12 +59,11 @@ const TodoListWithHooks = ({ initialTodos }) => {
       )}
     />
   );
+  const renderedTodosWrappedWithSpinner = (
+    <Spin spinning={async.loading}>{todosToRender}</Spin>
+  );
 
-  if (async.loading) {
-    return loadingToRender;
-  }
-
-  return todosToRender;
+  return renderedTodosWrappedWithSpinner;
 };
 
 export default TodoListWithHooks;
