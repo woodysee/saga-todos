@@ -1,7 +1,9 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 
 import todoApp from './reducers';
+
 import createSagaMiddleware from 'redux-saga';
+import todoSaga from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,4 +16,7 @@ const store = createStore(
     /* Show store on redux dev tools. TODO: Hide in production. */
   )
 );
+
+sagaMiddleware.run(todoSaga);
+
 export { store as reduxStore };
