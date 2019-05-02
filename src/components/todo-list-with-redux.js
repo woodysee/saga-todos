@@ -1,6 +1,6 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
-import { Checkbox, List } from 'antd';
+import { Checkbox, List, Spin } from 'antd';
 
 import { connect } from 'react-redux';
 import { toggleTodo, requestInitialTodos } from '../redux/actions';
@@ -49,10 +49,9 @@ class TodoListWithRedux extends React.Component {
     return { done, total };
   };
 
-  render() {
+  renderTodos = () => {
     const { todos } = this.state;
     const todoCount = this.computeTodoCount(todos);
-
     return (
       <List
         className={styles['lining']}
@@ -78,6 +77,14 @@ class TodoListWithRedux extends React.Component {
         }}
       />
     );
+  };
+
+  renderTodosWrappedWithSpinner = () => (
+    <Spin spinning={this.props.asyncs.todos.loading}>{this.renderTodos()}</Spin>
+  );
+
+  render() {
+    return this.renderTodosWrappedWithSpinner();
   }
 }
 
