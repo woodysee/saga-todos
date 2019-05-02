@@ -3,12 +3,12 @@ import createSagaMiddleware from 'redux-saga';
 
 import todoSaga from './sagas';
 
-import todoApp from './reducers';
+import todoReducer from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
-  todoApp,
+  todoReducer,
   window.STATE_FROM_SERVER /* Optional preloaded state */,
   compose(
     applyMiddleware(sagaMiddleware),
