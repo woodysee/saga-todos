@@ -1,6 +1,14 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects';
 
+import { todoActionTypes } from './actions';
+
 import initialTodos from '../components/mock-todos.json';
+
+const {
+  FETCH_INITIAL_TODOS,
+  FETCH_INITIAL_TODOS__SUCCESS,
+  FETCH_INITIAL_TODOS__FAILED
+} = todoActionTypes;
 
 const api = {
   fetchInitialTodos: () => {
@@ -24,16 +32,16 @@ function* fetchInitialTodos() {
       throw new Error(response.error);
     }
     yield put({
-      type: 'FETCH_INITIAL_TODOS__SUCCESS',
+      type: FETCH_INITIAL_TODOS__SUCCESS,
       payload: { todos: response.data }
     });
   } catch (error) {
-    yield put({ type: 'FETCH_INITIAL_TODOS__FAILED', message: error.message });
+    yield put({ type: FETCH_INITIAL_TODOS__FAILED, message: error.message });
   }
 }
 
 function* watchForFetchedInitialTodos() {
-  yield takeLatest('FETCH_INITIAL_TODOS', fetchInitialTodos);
+  yield takeLatest(FETCH_INITIAL_TODOS, fetchInitialTodos);
 }
 
 export default function* todoSaga() {
