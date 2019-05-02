@@ -5,7 +5,18 @@ import styles from './todo-list.module.scss';
 
 const TodoListWithHooks = ({ initialTodos }) => {
   const [todos, setTodos] = useState([]);
+  const [async, setAsync] = useState({
+    loading: true,
+    success: false
+  });
   useEffect(() => {
+    const initialTodosHasLoaded = initialTodos.length > 0;
+    if (initialTodosHasLoaded) {
+      setAsync({
+        loading: false,
+        success: true
+      });
+    }
     setTodos(initialTodos);
   }, [initialTodos]);
   const toggleTodoCompletion = (todos, todoId) => {
@@ -25,7 +36,25 @@ const TodoListWithHooks = ({ initialTodos }) => {
   };
   const todoCount = computeTodoCount(todos);
 
-  return (
+  const loadingToRender = (
+    <List
+      className={styles['lining']}
+      header={<h1>To do list created with Hooks</h1>}
+      footer={
+        <div>
+          Completed: {todoCount.done} / {todoCount.total}
+        </div>
+      }
+      bordered
+      dataSource={['Loading']}
+      renderItem={todo => (
+        <List.Item className="todo" key={todo}>
+          Loading
+        </List.Item>
+      )}
+    />
+  );
+  const todosToRender = (
     <List
       className={styles['lining']}
       header={<h1>To do list created with Hooks</h1>}
@@ -48,6 +77,12 @@ const TodoListWithHooks = ({ initialTodos }) => {
       )}
     />
   );
+
+  if (async.loading) {
+    return loadingToRender;
+  }
+
+  return todosToRender;
 };
 
 export default TodoListWithHooks;
