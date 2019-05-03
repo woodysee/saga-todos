@@ -1,9 +1,9 @@
 import React from 'react';
 import isEqual from 'lodash/isEqual';
-import { Checkbox, List } from 'antd';
+import { Checkbox, List, Spin } from 'antd';
 
 import { connect } from 'react-redux';
-import { toggleTodo } from '../redux/actions';
+import { toggleTodo, requestInitialTodos } from '../redux/actions';
 
 import styles from './todo-list.module.scss';
 
@@ -11,23 +11,31 @@ const mapStateToProps = (state /*, ownProps*/) => {
   return state;
 };
 
-const mapDispatchToProps = { toggleTodo };
+const mapDispatchToProps = { toggleTodo, requestInitialTodos };
 
 class TodoListWithRedux extends React.Component {
   state = {
-    todos: this.props.todos
+    todos: []
   };
+
+  componentDidMount() {
+    this.props.requestInitialTodos();
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (!isEqual(this.props.todos, prevProps.todos)) {
-      console.log(
-        "Strangely enough I don't see this message when requesting an action and when a todo is checked."
-      );
+      this.setTodos(this.props.todos);
     }
     if (!isEqual(this.state.todos, prevState.todos)) {
-      console.log("I don't see this either when todo is checked");
+      console.log("I don't see this when todo is checked");
     }
   }
+
+  setTodos = todos => {
+    this.setState({
+      todos
+    });
+  };
 
   toggleTodoCompletion = ({ todo, index }) => {
     const updatedTodo = { ...todo };
@@ -41,10 +49,9 @@ class TodoListWithRedux extends React.Component {
     return { done, total };
   };
 
-  render() {
+  renderTodos = () => {
     const { todos } = this.state;
     const todoCount = this.computeTodoCount(todos);
-
     return (
       <List
         className={styles['lining']}
@@ -70,6 +77,14 @@ class TodoListWithRedux extends React.Component {
         }}
       />
     );
+  };
+
+  renderTodosWrappedWithSpinner = () => (
+    <Spin spinning={this.props.asyncs.todos.loading}>{this.renderTodos()}</Spin>
+  );
+
+  render() {
+    return this.renderTodosWrappedWithSpinner();
   }
 }
 

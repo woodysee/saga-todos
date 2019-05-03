@@ -1,10 +1,21 @@
-import initialTodos from '../components/mock-todos.json';
-
 import { todoActionTypes } from './actions';
-const { TOGGLE_TODO } = todoActionTypes;
+const {
+  TOGGLE_TODO,
+  FETCH_INITIAL_TODOS,
+  FETCH_INITIAL_TODOS__SUCCESS,
+  FETCH_INITIAL_TODOS__FAILED
+} = todoActionTypes;
 
 const initialState = {
-  todos: initialTodos.data
+  asyncs: {
+    todos: {
+      error: false,
+      loading: false,
+      success: false,
+      message: ''
+    }
+  },
+  todos: []
 };
 
 export default function todoReducer(state = initialState, action) {
@@ -20,6 +31,37 @@ export default function todoReducer(state = initialState, action) {
         ...otherTodoAttributes
       };
       return { ...state, todos: updatedTodos };
+    }
+    case FETCH_INITIAL_TODOS: {
+      const updatedAsyncs = { ...state.asyncs };
+      updatedAsyncs.todos = {
+        error: false,
+        loading: true,
+        success: false,
+        message: 'Loading...'
+      };
+      return { ...state, asyncs: updatedAsyncs };
+    }
+    case FETCH_INITIAL_TODOS__SUCCESS: {
+      const updatedAsyncs = { ...state.asyncs };
+      updatedAsyncs.todos = {
+        error: false,
+        loading: false,
+        success: true,
+        message: 'Todos successfully retrived from server.'
+      };
+      console.log(action.payload.todos);
+      return { ...state, asyncs: updatedAsyncs, todos: action.payload.todos };
+    }
+    case FETCH_INITIAL_TODOS__FAILED: {
+      const updatedAsyncs = { ...state.asyncs };
+      updatedAsyncs.todos = {
+        error: true,
+        loading: false,
+        success: false,
+        message: action.message
+      };
+      return { ...state, asyncs: updatedAsyncs };
     }
     default: {
       return state;
